@@ -15,14 +15,15 @@ records the submission as processed. Yasir reviews and forwards to the client hi
 
 ## Step 1 — Find the live responses sheet
 
-Search Google Drive (connector) for a spreadsheet whose title contains `Ruqya Questionare`
-and `Responses` (it may be shared from another account — include `sharedWithMe = true` in a
-second search if the first finds nothing). Accept the live Google Sheet
-(`application/vnd.google-apps.spreadsheet`), NOT the static CSV snapshots named
-`...Form Responses 1.csv`.
+The live sheet is pinned in `state/processed.json` (`live_sheet_id`:
+`1YKhZKe-TeDp3REDairF65Gf_ilutlkHXY_mabu79fTY`, owner imammyklodi@gmail.com, shared with
+yasirsacto@gmail.com on 2026-08-20, verified readable). Use it directly. If it is ever
+inaccessible, fall back to searching Google Drive for a live spreadsheet
+(`application/vnd.google-apps.spreadsheet`) whose title contains `Ruqya Questionare` and
+`Responses` — NOT the static CSV snapshots named `...Form Responses 1.csv`.
 
-- If no live sheet is found: **end silently.** No email, no push, no commit. (Yasir hasn't
-  shared it yet.)
+- If the sheet cannot be read at all: **end silently** this run; if it stays unreadable two
+  runs in a row, send one PushNotification flagging lost sheet access.
 
 ## Step 2 — Read rows and diff against state
 
@@ -31,8 +32,13 @@ columns are the Ruqyah SA self-diagnosis questionnaire (timestamp, name, contact
 email/phone, then ~26 symptom questions across mental states, health, blockages, dreams,
 sleep phenomena).
 
-Load `ruqyah/pipeline/state/processed.json`. A row is NEW if its `(Timestamp, Name)` pair is
-not in the state file. If there are no new rows: **end silently** (still commit nothing).
+Load `ruqyah/pipeline/state/processed.json`. A row is NEW if its `Timestamp` value is not in
+`processed_timestamps`. If there are no new rows: **end silently** (still commit nothing).
+
+**Privacy rule: no client personal data (names, contacts, symptoms) goes into git — not in
+the state file, not in commit messages, and no client plan files are committed.** Plans live
+in Yasir's email and in the files delivered to him in this chat; the git-committed state is
+timestamps only.
 
 ## Step 3 — Build each new client's treatment plan
 
@@ -83,30 +89,32 @@ Verify the PDF is non-trivial in size, then screenshot-check one page if anythin
 fonts changed (`--screenshot=` + Read the PNG): Arabic must be shaped (connected letters,
 right-to-left), never disconnected boxes.
 
-## Step 5 — Commit plan + PDF, then push (BEFORE emailing)
+## Step 5 — Deliver for verification
 
 **Do not put file bytes (base64) through tool calls — it is token-prohibitive and risks
-corruption. The PDF travels via git; the email carries the plan as HTML.**
+corruption. And per the privacy rule, client plan files never go into git.**
 
-Save the PDF next to its HTML as `ruqyah/pipeline/plans/YYYY-MM-DD_<Name_Slugged>.pdf`.
-Append to `ruqyah/pipeline/state/processed.json`: timestamp, name, contact, plan filename,
-processed date. Commit plan HTML + PDF + state with message `Process Ruqyah intake: <Name>`
-and push to `claude/ruqyah-south-africa-scholar-w4wwjv` (retry with backoff on network
-failure; on non-fast-forward, fetch, rebase, push again). The PDF's stable link is then:
-
-`https://github.com/yasirsacto/claude-routines/blob/claude/ruqyah-south-africa-scholar-w4wwjv/ruqyah/pipeline/plans/<file>.pdf`
-
-## Step 6 — Deliver for verification
-
-1. **Gmail** (connector) `send_message`:
+1. **SendUserFile**: send the rendered PDF into this session's chat (`display: attach`,
+   caption naming the client and intake date). This is Yasir's copy for forwarding.
+2. **Gmail** (connector) `send_message`:
    - To: `yasirsacto@gmail.com`
    - Subject: `Ruqyah plan ready for review — <Client Name>`
    - `htmlBody`: a short review header (who submitted, headline symptoms, what the plan
-     indicates/prescribes, any safety flags FIRST, the GitHub PDF link prominently), followed
-     by the **complete plan HTML** (same content as the PDF; drop the `@page` CSS rule). The
-     email body must stand alone as the full reviewable plan.
-   - `body` (plain-text alternative): the summary + PDF link.
-2. **PushNotification**: `Ruqyah plan ready: <Client Name> — full plan + PDF link in your email.`
+     indicates/prescribes, any safety flags FIRST, and a note that the PDF is in the Claude
+     session chat), followed by the **complete plan HTML** (same content as the PDF; drop
+     the `@page` CSS rule). The email body must stand alone as the full reviewable plan —
+     printing it from Gmail also yields a clean PDF.
+   - `body` (plain-text alternative): the summary.
+3. **PushNotification**: `Ruqyah plan ready: <Client Name> — plan in your email, PDF in the session chat.`
+
+## Step 6 — Record state and push
+
+Append the processed row's `Timestamp` to `processed_timestamps` in
+`ruqyah/pipeline/state/processed.json` (timestamps only — no names or contacts) and note the
+disposition in `history` in aggregate, PII-free terms. Commit ONLY the state file, with a
+neutral message like `Update pipeline state`, and push to
+`claude/ruqyah-south-africa-scholar-w4wwjv` (retry with backoff; on non-fast-forward: fetch,
+rebase, push again). Plan HTML/PDF files stay untracked in the session workspace.
 
 ## Notes
 

@@ -1,7 +1,21 @@
 {
-  "note": "Rows already handled before the pipeline existed (plans made manually).",
-  "processed": [
-    {"timestamp": "7/29/2026 19:52:04", "name": "Shabana Nabi", "contact": "916-720-1629", "plan": "Shabana_Nabi_Ruqyah_Treatment_Plan.pdf (manual, pre-pipeline)", "processed_on": "2026-07-30"},
-    {"timestamp": "7/29/2026 19:52:31", "name": "Iqraam Nabi", "contact": "iqraam.nabi@gmail.com", "plan": "Iqraam_Nabi_Ruqyah_Treatment_Plan.pdf (manual, pre-pipeline)", "processed_on": "2026-07-30"}
+  "note": "Dedup state. A sheet row is NEW if its Timestamp value is absent from processed_timestamps. No personal data is stored here by design — names/contacts stay in the Google Sheet and in Yasir's email only.",
+  "live_sheet_id": "1YKhZKe-TeDp3REDairF65Gf_ilutlkHXY_mabu79fTY",
+  "live_sheet_title": "Ruqya Questionare  (Responses)",
+  "processed_timestamps": [
+    "9/12/2020 21:36:48",
+    "9/12/2020 21:36:59",
+    "9/12/2020 21:38:22",
+    "7/10/2025 18:11:11",
+    "8/25/2025 20:53:42",
+    "8/25/2025 20:53:56",
+    "7/29/2026 19:52:04",
+    "7/29/2026 19:52:31",
+    "8/5/2026 21:40:55",
+    "8/15/2026 10:19:40"
+  ],
+  "history": [
+    {"timestamps": ["9/12/2020 21:36:48", "9/12/2020 21:36:59", "9/12/2020 21:38:22", "7/10/2025 18:11:11", "8/25/2025 20:53:42", "8/25/2025 20:53:56"], "disposition": "skipped — legacy pre-pipeline entries (2020/2025)"},
+    {"timestamps": ["7/29/2026 19:52:04", "7/29/2026 19:52:31", "8/5/2026 21:40:55", "8/15/2026 10:19:40"], "disposition": "processed manually before the pipeline existed; plan PDFs are in Yasir's Drive"}
   ]
 }
