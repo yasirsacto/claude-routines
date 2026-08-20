@@ -83,26 +83,30 @@ Verify the PDF is non-trivial in size, then screenshot-check one page if anythin
 fonts changed (`--screenshot=` + Read the PNG): Arabic must be shaped (connected letters,
 right-to-left), never disconnected boxes.
 
-## Step 5 — Deliver for verification
+## Step 5 — Commit plan + PDF, then push (BEFORE emailing)
+
+**Do not put file bytes (base64) through tool calls — it is token-prohibitive and risks
+corruption. The PDF travels via git; the email carries the plan as HTML.**
+
+Save the PDF next to its HTML as `ruqyah/pipeline/plans/YYYY-MM-DD_<Name_Slugged>.pdf`.
+Append to `ruqyah/pipeline/state/processed.json`: timestamp, name, contact, plan filename,
+processed date. Commit plan HTML + PDF + state with message `Process Ruqyah intake: <Name>`
+and push to `claude/ruqyah-south-africa-scholar-w4wwjv` (retry with backoff on network
+failure; on non-fast-forward, fetch, rebase, push again). The PDF's stable link is then:
+
+`https://github.com/yasirsacto/claude-routines/blob/claude/ruqyah-south-africa-scholar-w4wwjv/ruqyah/pipeline/plans/<file>.pdf`
+
+## Step 6 — Deliver for verification
 
 1. **Gmail** (connector) `send_message`:
    - To: `yasirsacto@gmail.com`
    - Subject: `Ruqyah plan ready for review — <Client Name>`
-   - Body: 4–8 lines — who submitted, their headline symptoms, what the plan indicates and
-     prescribes, any safety flags (flags go FIRST), reminder that he verifies then forwards.
-   - Attachment: the PDF (base64, mimeType application/pdf).
-2. **PushNotification**: `Ruqyah plan ready: <Client Name> — PDF in your email for review.`
-3. **Drive**: upload the PDF into the Ruqyah folder (id `1Qz_ao6RG7WQOouGs_s_pMKRzqrOLn2Tq`)
-   via `create_file` (base64Content, contentMimeType application/pdf,
-   disableConversionToGoogleType true).
-
-## Step 6 — Record state and push
-
-Append to `ruqyah/pipeline/state/processed.json`: timestamp, name, contact, plan filename,
-processed date. Commit the state file and the plan HTML (not the PDF) with message
-`Process Ruqyah intake: <Name>` and push to `claude/ruqyah-south-africa-scholar-w4wwjv`
-(retry with backoff on network failure). If the push is rejected (non-fast-forward), fetch,
-rebase onto the remote branch, and push again.
+   - `htmlBody`: a short review header (who submitted, headline symptoms, what the plan
+     indicates/prescribes, any safety flags FIRST, the GitHub PDF link prominently), followed
+     by the **complete plan HTML** (same content as the PDF; drop the `@page` CSS rule). The
+     email body must stand alone as the full reviewable plan.
+   - `body` (plain-text alternative): the summary + PDF link.
+2. **PushNotification**: `Ruqyah plan ready: <Client Name> — full plan + PDF link in your email.`
 
 ## Notes
 
