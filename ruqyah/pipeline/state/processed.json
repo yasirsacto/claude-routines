@@ -1,0 +1,7 @@
+{
+  "note": "Rows already handled before the pipeline existed (plans made manually).",
+  "processed": [
+    {"timestamp": "7/29/2026 19:52:04", "name": "Shabana Nabi", "contact": "916-720-1629", "plan": "Shabana_Nabi_Ruqyah_Treatment_Plan.pdf (manual, pre-pipeline)", "processed_on": "2026-07-30"},
+    {"timestamp": "7/29/2026 19:52:31", "name": "Iqraam Nabi", "contact": "iqraam.nabi@gmail.com", "plan": "Iqraam_Nabi_Ruqyah_Treatment_Plan.pdf (manual, pre-pipeline)", "processed_on": "2026-07-30"}
+  ]
+}
