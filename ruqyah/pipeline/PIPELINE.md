@@ -99,12 +99,13 @@ corruption. And per the privacy rule, client plan files never go into git.**
 2. **Gmail** (connector) `send_message`:
    - To: `yasirsacto@gmail.com`
    - Subject: `Ruqyah plan ready for review — <Client Name>`
-   - `htmlBody`: a short review header (who submitted, headline symptoms, what the plan
-     indicates/prescribes, any safety flags FIRST, and a note that the PDF is in the Claude
-     session chat), followed by the **complete plan HTML** (same content as the PDF; drop
-     the `@page` CSS rule). The email body must stand alone as the full reviewable plan —
-     printing it from Gmail also yields a clean PDF.
-   - `body` (plain-text alternative): the summary.
+   - `htmlBody`: a review digest — who submitted, safety flags FIRST, what the answers
+     indicate (mapped symptom clusters), the exact prescription (each specific verse by
+     name and reference), and the programme components — with a prominent note that the
+     complete PDF is in the Claude session chat. The PDF delivered via SendUserFile is the
+     authoritative full document (Gmail clips very long bodies, so don't inline the whole
+     plan; the digest must be complete enough to review the prescription decisions).
+   - `body` (plain-text alternative): the same digest in plain text.
 3. **PushNotification**: `Ruqyah plan ready: <Client Name> — plan in your email, PDF in the session chat.`
 
 ## Step 6 — Record state and push

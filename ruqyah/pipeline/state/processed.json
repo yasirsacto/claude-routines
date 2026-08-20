@@ -12,10 +12,14 @@
     "7/29/2026 19:52:04",
     "7/29/2026 19:52:31",
     "8/5/2026 21:40:55",
+    "8/9/2026 17:57:34",
+    "8/9/2026 18:33:54",
+    "8/9/2026 20:59:13",
     "8/15/2026 10:19:40"
   ],
   "history": [
     {"timestamps": ["9/12/2020 21:36:48", "9/12/2020 21:36:59", "9/12/2020 21:38:22", "7/10/2025 18:11:11", "8/25/2025 20:53:42", "8/25/2025 20:53:56"], "disposition": "skipped — legacy pre-pipeline entries (2020/2025)"},
-    {"timestamps": ["7/29/2026 19:52:04", "7/29/2026 19:52:31", "8/5/2026 21:40:55", "8/15/2026 10:19:40"], "disposition": "processed manually before the pipeline existed; plan PDFs are in Yasir's Drive"}
+    {"timestamps": ["7/29/2026 19:52:04", "7/29/2026 19:52:31", "8/5/2026 21:40:55", "8/15/2026 10:19:40"], "disposition": "processed manually before the pipeline existed; plan PDFs are in Yasir's Drive"},
+    {"timestamps": ["8/9/2026 17:57:34", "8/9/2026 18:33:54", "8/9/2026 20:59:13"], "disposition": "processed 2026-08-20 by the pipeline (first live batch): plans emailed to Yasir for review, PDFs delivered in the session chat"}
   ]
 }
