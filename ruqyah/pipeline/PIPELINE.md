@@ -116,3 +116,14 @@ failure; on non-fast-forward, fetch, rebase, push again). The PDF's stable link 
 - If anything fails midway (e.g. Gmail error), do NOT record the row as processed — the next
   daily run retries it.
 - Do not create pull requests. Do not email anyone other than yasirsacto@gmail.com.
+
+## How this runs (live config)
+
+- Routine **"Ruqyah daily intake processing"** (`trig_01TYyKkiao6Ls2FGmKHQB9yV`), cron
+  `0 14 * * *` UTC (~7:00 AM Pacific), fires into the persistent pipeline session
+  `session_01WTUxW2iuFLHKP5jDWygRes` — that session holds the Gmail and Google Drive
+  connectors (org policy blocks attaching connectors to fresh-session triggers).
+- Prerequisite: the LIVE "Ruqya Questionare (Responses)" Google Sheet must be shared with
+  yasirsacto@gmail.com (it lives in another Google account). Until then, every run ends
+  silently.
+- Yasir can also say "process the form now" in the session at any time for an immediate run.
